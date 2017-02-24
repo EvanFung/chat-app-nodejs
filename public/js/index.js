@@ -7,10 +7,11 @@ var socket = io();
             
 socket.on('connect',function() {
     console.log('connected to server');
-    socket.emit('createMessage',{
-        from:'evanfung',
-        text:'屌你'
-    });
+    // socket.emit('createMessage',{
+    //     from:'evanfung',
+    //     text:'屌你',
+    //     createAt:new Date().getTime()
+    // });
 });
             
 socket.on('disconnect',function() {
