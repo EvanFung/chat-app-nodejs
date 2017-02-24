@@ -12,6 +12,22 @@ app.use(express.static(publicPath));
 
 io.on('connection',(socket) => {
     console.log('New user come in');
+    
+    socket.emit('newEmail',{
+        from:'evanfung@apple.com',
+        text:'Hey, what is going on?',
+        creatAt:123
+    });
+    
+    
+    socket.on('createEmail',(newEmail) => {
+        console.log('createEmail',newEmail);
+    });
+    
+    //socket argument代表着全部已经连接上的client
+    socket.on('disconnect',() => {
+        console.log('User was disconnected')
+    });
 });
 server.listen(process.env.PORT,process.env.IP,function() {
     console.log('server is up on port '+process.env.PORT);    
