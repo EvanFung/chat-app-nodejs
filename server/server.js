@@ -13,16 +13,18 @@ app.use(express.static(publicPath));
 io.on('connection',(socket) => {
     console.log('New user come in');
     
-    socket.emit('newEmail',{
-        from:'evanfung@apple.com',
-        text:'Hey, what is going on?',
-        creatAt:123
+    socket.emit('newMessage',{
+        form:'evanfung',
+        text:'Hi I am Evan',
+        createAt:new Date().toDateString()
     });
     
     
-    socket.on('createEmail',(newEmail) => {
-        console.log('createEmail',newEmail);
-    });
+    
+    socket.on('createMessage',(message) => {
+        console.log(message);
+    })
+    
     
     //socket argument代表着全部已经连接上的client
     socket.on('disconnect',() => {

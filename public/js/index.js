@@ -7,10 +7,9 @@ var socket = io();
             
 socket.on('connect',function() {
     console.log('connected to server');
-    
-    socket.emit('createEmail',{
-        to:'evanfung@app.com',
-        text:'hey, i am evan'
+    socket.emit('createMessage',{
+        from:'evanfung',
+        text:'屌你'
     });
 });
             
@@ -18,6 +17,7 @@ socket.on('disconnect',function() {
     console.log('disconnected')
 });
 
-socket.on('newEmail',function(email) {
-    console.log('new email',email);
+
+socket.on('newMessage',function(message) {
+    console.log('The message is ',message);
 });
