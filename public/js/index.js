@@ -21,4 +21,26 @@ socket.on('disconnect',function() {
 
 socket.on('newMessage',function(message) {
     console.log('The message is ',message);
+    var li = $('<li></li>');
+    li.text(`${message.from}:${message.text}`);
+    $('#messages').append(li);
+});
+
+socket.emit('createMessage',{
+    from:'Frank',
+    text:'Hi'
+},function(data) {
+    //当成功发送到server端的时候，server传来的成功或者失败的acknowlegment.
+    console.log('Got it ' + data);
+});
+
+$('#message-form').on('submit',function(e) {
+    e.preventDefault();
+    
+    socket.emit('createMessage', {
+        from:'User',
+        text:$('[name=message]').val()
+    },function() {
+        
+    });
 });
