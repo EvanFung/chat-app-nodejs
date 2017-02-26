@@ -4,7 +4,7 @@ const http = require('http');
 const express = require('express');
 const socketIO = require('socket.io');
 const publicPath = path.join(__dirname,'../public');
-const generateMessage = require('./utils/message');
+const generate = require('./utils/message');
 var app = express();
 var server = http.createServer(app);
 var io = socketIO(server);
@@ -16,15 +16,19 @@ io.on('connection',(socket) => {
     
     
     //socket.emit from admin text welcome to chat app
-    socket.emit('newMessage',generateMessage('Admin','Welcome to the chat app'));
+    socket.emit('newMessage',generate.generateMessage('Admin','Welcome to the chat app'));
     //socket.broadcast.emit from admin text New user joined
-    socket.broadcast.emit('newMessage',generateMessage('Admin','New User Joined'));
+    socket.broadcast.emit('newMessage',generate.generateMessage('Admin','New User Joined'));
     socket.on('createMessage',(message,callback) => {
         console.log(message);
         //it emits an event to every single connection
-        io.emit('newMessage',generateMessage(message.from,message.text));
+        io.emit('newMessage',generate.generateMessage(message.from,message.text));
         callback('This is from server!');
-    })
+    });
+    
+    socket.on('createLocationMessage',(coords) => {
+        socket.emit('newLocationMessage',generate.generateLocationMessage('Admin',coords.latitude,coords.longitude));
+    });
     
     
     //socket argument代表着当前和你连接的user
@@ -32,6 +36,9 @@ io.on('connection',(socket) => {
         console.log('User was disconnected')
     });
 });
+
+
+
 server.listen(process.env.PORT,process.env.IP,function() {
     console.log('server is up on port '+process.env.PORT);    
 });

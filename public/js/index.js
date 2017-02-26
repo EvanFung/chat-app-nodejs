@@ -26,12 +26,21 @@ socket.on('newMessage',function(message) {
     $('#messages').append(li);
 });
 
-socket.emit('createMessage',{
-    from:'Frank',
-    text:'Hi'
-},function(data) {
-    //当成功发送到server端的时候，server传来的成功或者失败的acknowlegment.
-    console.log('Got it ' + data);
+// socket.emit('createMessage',{
+//     from:'Frank',
+//     text:'Hi'
+// },function(data) {
+//     //当成功发送到server端的时候，server传来的成功或者失败的acknowlegment.
+//     console.log('Got it ' + data);
+// });
+
+socket.on('newLocationMessage',function(message) {
+   var li = $('<li></li>');
+   var a = $('<a target="_blank">My current location</a>');
+   li.text(`${message.from}:`);
+   a.attr('href',message.url);
+   li.append(a);
+   $('#messages').append(li);
 });
 
 $('#message-form').on('submit',function(e) {
@@ -42,5 +51,24 @@ $('#message-form').on('submit',function(e) {
         text:$('[name=message]').val()
     },function() {
         
+    });
+});
+
+var locationButton = $('#send-location');
+locationButton.on('click',function() {
+    //if the browser does not support geolocation
+    if(!navigator.geolocation) {
+       return alert('Geolocation not supported by your browser'); 
+    }
+    
+    //the first argument is success
+    //the second argument is fail to get current position
+    navigator.geolocation.getCurrentPosition(function(position) {
+        socket.emit('createLocationMessage',{
+            latitude:position.coords.latitude,
+            longitude:position.coords.longitude
+        });
+    },function(){
+        alert('Unable to fetch location');
     });
 });
