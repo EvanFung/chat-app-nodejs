@@ -23,7 +23,7 @@ io.on('connection',(socket) => {
         console.log(message);
         //it emits an event to every single connection
         io.emit('newMessage',generate.generateMessage(message.from,message.text));
-        callback('This is from server!');
+        callback();
     });
     
     socket.on('createLocationMessage',(coords) => {

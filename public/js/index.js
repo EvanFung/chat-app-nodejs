@@ -46,11 +46,14 @@ socket.on('newLocationMessage',function(message) {
 $('#message-form').on('submit',function(e) {
     e.preventDefault();
     
+    var messageTextbox = $('[name=message]');
+    
     socket.emit('createMessage', {
         from:'User',
-        text:$('[name=message]').val()
+        text:messageTextbox.val()
     },function() {
-        
+        //after sent message, the input field should empty
+        messageTextbox.val("");
     });
 });
 
@@ -61,14 +64,20 @@ locationButton.on('click',function() {
        return alert('Geolocation not supported by your browser'); 
     }
     
+    locationButton.attr('disabled','disabled').text('Sending location...');
+    
     //the first argument is success
     //the second argument is fail to get current position
     navigator.geolocation.getCurrentPosition(function(position) {
+        //if the user successfully get the current position, the locationButton should be actived!
+        locationButton.removeAttr('disabled').text('Send location');
         socket.emit('createLocationMessage',{
             latitude:position.coords.latitude,
             longitude:position.coords.longitude
         });
     },function(){
+        //if the user can not get the location, it should not disable the button.
+        locationButton.removeAttr('disabled').text('Send location');
         alert('Unable to fetch location');
     });
 });
