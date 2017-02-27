@@ -4,14 +4,26 @@
 //listen for data from the server
 //send data to the server
 var socket = io();
+//scroll automaticlly to the buttom when chat message is grow.
+function scrollToButtom() {
+    //selector
+    var messages = $('#messages');
+    var newMessage = messages.children('li:last-child');
+    //height
+    var clientHeight = messages.prop('clientHeight');
+    var scrollTop = messages.prop('scrollTop');
+    var scrollHeight = messages.prop('scrollHeight');
+    var newMessageHeight = newMessage.innerHeight();
+    var lastMessageHeight = newMessage.prev().innerHeight();
+    
+    if(clientHeight + scrollTop + newMessageHeight + lastMessageHeight >= scrollHeight) {
+        messages.scrollTop(scrollHeight);
+    }
+}
             
 socket.on('connect',function() {
     console.log('connected to server');
-    // socket.emit('createMessage',{
-    //     from:'evanfung',
-    //     text:'屌你',
-    //     createAt:new Date().getTime()
-    // });
+
 });
             
 socket.on('disconnect',function() {
@@ -29,12 +41,7 @@ socket.on('newMessage',function(message) {
     });
     
     $("#messages").append(html);
-    
-    // var formattedTime = moment(message.createAt).format('h:mm a');
-    // console.log('The message is ',message);
-    // var li = $('<li></li>');
-    // li.text(`${message.from} ${formattedTime}:${message.text}`);
-    // $('#messages').append(li);
+    scrollToButtom();
 });
 
 // socket.emit('createMessage',{
@@ -55,6 +62,7 @@ socket.on('newLocationMessage',function(message) {
     });
     
     $("#messages").append(html);
+    scrollToButtom();
 //   var li = $('<li></li>');
 //   var a = $('<a target="_blank">My current location</a>');
 //   li.text(`${message.from} ${formattedTime}:`);
