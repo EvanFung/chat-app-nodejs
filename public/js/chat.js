@@ -47,7 +47,9 @@ socket.on('updateUserList',function(users) {
     users.forEach(function(user) {
         ol.append($('<li></li>').text(user));
     });
-    
+    var link = $('<a>Back to index page</a>');
+    link.attr('href',"/");
+    ol.append($('<li></li>').append(link));
     $('#users').html(ol);
 });
 
