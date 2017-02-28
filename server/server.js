@@ -57,14 +57,20 @@ io.on('connection',(socket) => {
     });
     
     socket.on('createMessage',(message,callback) => {
-        console.log(message);
-        //it emits an event to every single connection
-        io.emit('newMessage',generate.generateMessage(message.from,message.text));
+        var user = users.getUser(socket.id);
+        
+        if(user && validation.isRealString(message.text)) {
+            //it emits an event to every single connection
+            io.to(user.room).emit('newMessage',generate.generateMessage(user.name,message.text));            
+        }
         callback();
     });
     
     socket.on('createLocationMessage',(coords) => {
-        socket.emit('newLocationMessage',generate.generateLocationMessage('Admin',coords.latitude,coords.longitude));
+        var user = users.getUser(socket.id);
+        if(user) {
+         io.to(user.room).emit('newLocationMessage',generate.generateLocationMessage(user.name,coords.latitude,coords.longitude));   
+        }
     });
     
     
