@@ -1,20 +1,20 @@
-        //To join a room
-        //socket.join('The office fans');
+//To join a room
+//socket.join('The office fans');
         
-        //To leave a room
-        //socket.leave('The office fans');
+//To leave a room
+//socket.leave('The office fans');
         
-        //emit it to every single connected user
-        //io.emit();
+//emit it to every single connected user
+//io.emit();
         
-        //send the message to everyone connected to the socket server expect for the current user
-        //socket.broadcast.emit() -> socket.broadcast.to('The office fans').emit() (room version)
+//send the message to everyone connected to the socket server expect for the current user
+//socket.broadcast.emit() -> socket.broadcast.to('The office fans').emit() (room version)
 
-        //this emits an event specifically to one user
-        //socket.emit()
+//this emits an event specifically to one user
+//socket.emit()
         
-        //emit an event to everyone in its room. io.emit -> io.to
-        //it.to('The office fans')
+//emit an event to everyone in its room. io.emit -> io.to
+//it.to('The office fans')
 
 //https://webdevbootcamp-evanfungv.c9users.io/
 const path = require('path');
